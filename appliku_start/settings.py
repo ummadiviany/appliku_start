@@ -14,12 +14,19 @@ if SENTRY_DSN:
 
 DEBUG = env.bool('DJANGO_DEBUG', False)
 
+from pathlib import Path
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 DATABASES = {
-    'default': env.db('DATABASE_URL'),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
-DATABASES['default']['ATOMIC_REQUESTS'] = True  # noqa F405
-DATABASES['default']['CONN_MAX_AGE'] = env.int('CONN_MAX_AGE', default=60)  # noqa F405
-SECRET_KEY = env('DJANGO_SECRET_KEY')
+
+SECRET_KEY = 'l$$-cmg^fwat!9nm&g-#_xgh64y5yha9n)qk4w@rof6)4ok3s'
+
 if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
